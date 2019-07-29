@@ -1,0 +1,41 @@
+{
+  "name": "app---name",
+  "version": "0.1.0",
+  "private": true,
+  "core4": {
+    "build_command": [
+      "yarn install",
+      "yarn build --dest dist --modern"
+    ],
+    "dist": "./dist"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:unit": "vue-cli-service test:unit --watch --testPathPattern=SaClientModels"
+  },
+  "dependencies": {
+    "core4ui": "https://github.com/plan-net/core4ui.git#develop",
+    "axios-mock-adapter": "^1.16.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-e2e-cypress": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-plugin-unit-jest": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "sass": "^1.18.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10",
+    "vue-test-utils-helpers": "https://github.com/AmpleOrganics/vue-test-utils-helpers.git#1.0.4"
+  }
+}
