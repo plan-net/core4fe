@@ -8,13 +8,13 @@
     >
       <!-- //LIST OF CLIENTS -->
       <template>
-        <v-list-tile to="/" key="-1001">
-          <v-list-tile-content>
-            <v-list-tile-title>
+        <v-list-item to="/" key="-1001">
+          <v-list-item-content>
+            <v-list-item-title>
               Clients
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </template>
 
     </v-slide-y-transition>

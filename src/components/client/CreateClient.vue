@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="isOpen" lazy max-width="480px">
+    <v-dialog v-model="isOpen" max-width="480px">
         <v-card tile>
             <v-toolbar dense card dark color="accent">
                 <v-toolbar-title class="ml-0">
