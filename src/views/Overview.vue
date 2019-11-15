@@ -62,6 +62,7 @@ export default {
   },
   mounted () {
     // this.$store.dispatch(FETCH_CLIENTS)
+    console.log(process.env.VUE_APP_APIBASE_APP)
   },
   data () {
     return {

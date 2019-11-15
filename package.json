@@ -17,8 +17,8 @@
     "test:unit": "vue-cli-service test:unit --watch --testPathPattern=SaClientModels"
   },
   "dependencies": {
-    "core4ui": "https://github.com/plan-net/core4ui.git#develop",
-    "axios-mock-adapter": "^1.16.0"
+    "axios-mock-adapter": "^1.16.0",
+    "core4ui": "^1.1.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
