@@ -1,4 +1,4 @@
-# app---name
+# data table
 This is just a starter application for core4/core4ui webapps.
 [Outdated documentation (parts)](https://bi.plan-net.com/styleguide/)
 

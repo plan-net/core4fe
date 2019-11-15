@@ -1,0 +1,183 @@
+<template>
+  <div>
+<!--    <span><pre>{{options}}</pre></span>-->
+    <v-data-table
+      v-resize:debounce="onResize"
+      :class="config.className"
+      :height="internalHeight"
+      :headers="headers"
+      :items="rows"
+      :options.sync="options"
+      :fixed-header="options.option.fixed_header"
+      :hide-default-header="options.option.hide_header"
+      :hide-default-footer="false"
+      :multi-sort="true"
+      :dense="options.option.dense"
+      item-key="id"
+      :items-per-page="options.itemsPerPage"
+      :server-items-length="options.paging.total_count"
+      :loading="loading"
+      :loading-text="translation.data_loading"
+      :footer-props="footerProps"
+      @click:row="$emit('click-row', $event)"
+    >
+      <template v-slot:top>
+        <advanced-options
+          :options="{column: column, dense: options.option.dense}"
+          :translation="translation"
+          :loading="loading"
+          @resetOptions="resetOptions()"
+          @saveOptions="saveOptions($event)"></advanced-options>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+import debounce from 'debounce'
+import { clone } from 'core4ui/core4/helper.js'
+
+import AdvancedOptions from './components/AdvancedOptions'
+
+import apiService from './api/service'
+import resize from './helper/resize.js'
+import { checkShadow } from './helper/resize-functions.js'
+import { initialTranslation, OPTIONS } from './helper/obj.js'
+
+export default {
+  name: 'data-table',
+  components: {
+    AdvancedOptions
+  },
+  directives: {
+    resize
+  },
+  props: {
+    config: {
+      type: Object,
+      required: true
+    },
+    labels: {
+      type: Object,
+      default: () => {
+      }
+    }
+  },
+  data: () => ({
+    startWatch: false,
+    loading: false,
+
+    // config related to vuetify datatable
+    options: Object.assign({}, OPTIONS),
+    rows: [],
+    column: []
+  }),
+  mounted () {
+    this.getTableFromApi = debounce(this.getTableFromApi, 500)
+    this.getTableFromApi()
+
+    // trigger update after payload change
+    this.$bus.$on('update-datatable', this.getTableFromApi)
+  },
+  watch: {
+    options: {
+      handler (newVal, oldVal) {
+        if (this.startWatch) this.getTableFromApi()
+      },
+      deep: true
+    }
+  },
+  computed: {
+    footerProps () {
+      const { itemsPerPageAllText, itemsPerPageText } = this.translation
+
+      return Object.assign(
+        { showFirstLastPage: true },
+        { itemsPerPageAllText, itemsPerPageText }
+      )
+    },
+    translation () {
+      return Object.assign({}, initialTranslation, this.labels)
+    },
+    headers () {
+      return this.column.filter(item => !item.hide)
+    },
+    internalHeight () {
+      return this.options.fixed_header === true ? (this.options.height || 555) : null
+    }
+  },
+  methods: {
+    onResize () {
+      checkShadow(this.$el)
+    },
+    saveOptions (data) {
+      this.getTableFromApi({column: data.column, dense: data.dense})
+    },
+    resetOptions () {
+      this.getTableFromApi({reset: true})
+    },
+    getTableFromApi (params) {
+      this.loading = true
+
+      return apiService.getTable(this.config.url, Object.assign(clone(this.options), params), this.config.payload)
+        .then(data => {
+          this.startWatch = false
+
+          Object.assign(this.options, {
+            action: data.action,
+            itemsPerPage: data.itemsPerPage,
+            option: data.option,
+            page: data.page,
+            paging: data.paging,
+            sort: data.sort,
+            sortBy: data.sortBy,
+            sortDesc: data.sortDesc
+          })
+
+          this.column = data.column
+          this.rows = data.body
+
+          this.$nextTick(() => {
+            this.startWatch = true
+          })
+        })
+        .catch(data => {
+          // ToDo: error handling
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    }
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onWindowResize)
+  }
+}
+</script>
+
+<style scoped lang="css">
+div >>> tbody tr td {
+  cursor: pointer;
+}
+</style>
+<style scoped lang="scss">
+.shadowed {
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    right: 0;
+    width: 70px;
+    top: 0;
+    bottom: 0;
+    background: rgb(150, 150, 150);
+    background: linear-gradient(
+      90deg,
+      rgba(150, 150, 150, 0) 50%,
+      rgba(0, 0, 0, 0.87) 100%
+    );
+    position: absolute;
+    z-index: 2000;
+  }
+}
+</style>

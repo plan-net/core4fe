@@ -12,7 +12,7 @@
 import SideNavigation from '@/components/SideNavigation'
 
 export default {
-  name: 'app---name',
+  name: 'data-table',
   components: {
     SideNavigation
   },

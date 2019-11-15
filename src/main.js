@@ -15,6 +15,6 @@ Vue.use(Core4ui, {
   store,
   config: {
     THEME,
-    TITLE: 'app---name'
+    TITLE: 'data table'
   }
 })
