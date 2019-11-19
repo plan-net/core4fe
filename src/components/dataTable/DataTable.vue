@@ -1,53 +1,55 @@
 <template>
   <div>
 <!--    <span><pre>{{options}}</pre></span>-->
-    <v-data-table
-      v-resize:debounce="onResize"
-      :class="config.className"
-      :height="internalHeight"
-      :headers="headers"
-      :items="rows"
-      :options.sync="options"
-      :fixed-header="options.option.fixed_header"
-      :hide-default-header="options.option.hide_header"
-      :hide-default-footer="false"
-      :multi-sort="true"
-      :dense="options.option.dense"
-      item-key="id"
-      :items-per-page="options.itemsPerPage"
-      :server-items-length="options.paging.total_count"
-      :loading="loading"
-      :loading-text="translation.data_loading"
-      :footer-props="footerProps"
-      @click:row="$emit('click-row', $event)"
-    >
-      <template v-slot:top>
-        <v-container fluid>
-          <v-row no-gutters>
-            <v-col cols="auto" lg="3">
-              <search :callback="search"></search>
-            </v-col>
+    <component :is="selectedComponent">
+      <v-data-table
+        v-resize:debounce="onResize"
+        :class="config.className"
+        :height="internalHeight"
+        :headers="headers"
+        :items="rows"
+        :options.sync="options"
+        :fixed-header="options.option.fixed_header"
+        :hide-default-header="options.option.hide_header"
+        :hide-default-footer="false"
+        :multi-sort="true"
+        :dense="options.option.dense"
+        item-key="id"
+        :items-per-page="options.itemsPerPage"
+        :server-items-length="options.paging.total_count"
+        :loading="loading"
+        :loading-text="translation.data_loading"
+        :footer-props="footerProps"
+        @click:row="$emit('click-row', $event)"
+      >
+        <template v-slot:top>
+          <v-container fluid>
+            <v-row no-gutters>
+              <v-col cols="auto" lg="3">
+                <search :callback="search"></search>
+              </v-col>
 
-            <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
 
-            <v-col cols="auto">
-              <download
-                class="mx-4"
-                :callback="download"
-              ></download>
-            </v-col>
-            <v-col cols="auto">
+              <v-col cols="auto">
+                <download
+                  class="mx-4"
+                  :callback="download"
+                ></download>
+              </v-col>
+              <v-col cols="auto">
                 <advanced-options v-if="options.option.advanced_options"
-                  :options="{column: column, dense: options.option.dense}"
-                  :translation="translation"
-                  :loading="loading"
-                  @resetOptions="resetOptions()"
-                  @saveOptions="saveOptions($event)"></advanced-options>
-            </v-col>
-          </v-row>
-        </v-container>
-      </template>
-    </v-data-table>
+                                  :options="{column: column, dense: options.option.dense, fullscreen: options.option.fullscreen}"
+                                  :translation="translation"
+                                  :loading="loading"
+                                  @resetOptions="resetOptions()"
+                                  @saveOptions="saveOptions($event)"></advanced-options>
+              </v-col>
+            </v-row>
+          </v-container>
+        </template>
+      </v-data-table>
+    </component>
   </div>
 </template>
 
@@ -58,6 +60,8 @@ import { clone } from 'core4ui/core4/helper.js'
 import AdvancedOptions from './components/AdvancedOptions'
 import Download from './components/Download'
 import Search from './components/Search'
+import RegularWrapper from './components/RegularWrapper'
+import FullscreenWrapper from './components/FullscreenWrapper'
 
 import apiService from './api/service'
 import resize from './helper/resize.js'
@@ -67,6 +71,8 @@ import { initialTranslation, OPTIONS } from './helper/obj.js'
 export default {
   name: 'data-table',
   components: {
+    RegularWrapper,
+    FullscreenWrapper,
     AdvancedOptions,
     Download,
     Search
@@ -86,6 +92,8 @@ export default {
     }
   },
   data: () => ({
+    selectedComponent: 'RegularWrapper',
+
     startWatch: false,
     loading: false,
 
@@ -166,6 +174,9 @@ export default {
       checkShadow(this.$el)
     },
     saveOptions (data) {
+      debugger
+      this.selectedComponent = data.fullscreen ? 'FullscreenWrapper' : 'RegularWrapper'
+      this.options.option.fullscreen = data.fullscreen
       this.getTableFromApi({column: data.column, dense: data.dense})
     },
     resetOptions () {
@@ -181,7 +192,7 @@ export default {
           Object.assign(this.options, {
             action: data.action,
             itemsPerPage: data.itemsPerPage,
-            option: data.option,
+            option: Object.assign(data.option, {fullscreen: this.options.option.fullscreen}),
             page: data.page,
             paging: data.paging,
             sort: data.sort,

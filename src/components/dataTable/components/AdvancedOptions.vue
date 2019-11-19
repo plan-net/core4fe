@@ -167,7 +167,7 @@
         own_options: {
           column: [],
           dense: true,
-          fullscreen: false
+          fullscreen: null
         },
         panel:[0, 1],
 
@@ -186,6 +186,7 @@
       this.handler = debounce(this.handler, 500)
     },
     created () {
+      debugger
       this.own_options = Object.assign(this.own_options, this.options)
     },
     watch: {
@@ -201,6 +202,7 @@
         this.own_options = Object.assign(this.own_options, clone(newVal))
       },
       save () {
+        debugger
         this.dialog = !this.dialog
         this.$emit('saveOptions', this.own_options)
       },
