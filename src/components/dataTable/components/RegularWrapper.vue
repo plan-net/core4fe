@@ -5,11 +5,10 @@
 </template>
 
 <script>
-  export default {
-    name: "RegularWrapper"
-  }
+export default {
+  name: 'RegularWrapper'
+}
 </script>
 
 <style scoped>
-
 </style>

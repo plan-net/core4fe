@@ -5,7 +5,7 @@ let pipe = (...fns) => x => fns.reduce((v, f) => f(v), x)
 
 function propMap (keys = [], obj) {
   keys.forEach(item => {
-    if (mapDict[item] && (item in obj)) {
+    if (mapDict[item] && item in obj) {
       obj[mapDict[item]] = obj[item]
       delete obj[item]
     }
@@ -43,19 +43,25 @@ function mapPaging (data) {
 function mapSort (data) {
   // dataTable component store column sorting in sortBy, sortDesc value,
   // server store column sorting in store
-  Object.assign(data, (function () {
-    return data.sort.reduce((newObj, item) => {
-      newObj.sortBy.push(item.name)
-      newObj.sortDesc.push(!item.ascending)
-      return newObj
-    }, { sortBy: [], sortDesc: [] })
-  }()))
+  Object.assign(
+    data,
+    (function () {
+      return data.sort.reduce(
+        (newObj, item) => {
+          newObj.sortBy.push(item.name)
+          newObj.sortDesc.push(!item.ascending)
+          return newObj
+        },
+        { sortBy: [], sortDesc: [] }
+      )
+    })()
+  )
 
   return data
 }
 
 function buildRequest (options, params = {}) {
-  if (options.reset) return {reset: options.reset}
+  if (options.reset) return { reset: options.reset }
   options = Object.assign(options, params)
 
   let result = {
@@ -83,7 +89,7 @@ function buildRequest (options, params = {}) {
     result['column'] = options.column.map(item => {
       propMap(['text', 'value'], item)
 
-      return {name: item.name, hide: item.hide}
+      return { name: item.name, hide: item.hide }
     })
   }
 
@@ -96,7 +102,8 @@ function buildRequest (options, params = {}) {
 
 export default {
   getTable (url, options, payload = {}, params = {}) {
-    return api.get(url, Object.assign(buildRequest(options, params), payload))
+    return api
+      .get(url, Object.assign(buildRequest(options, params), payload))
       .then(data => {
         pipe(mapPaging, mapColumns, mapSort)(data)
 
@@ -106,11 +113,12 @@ export default {
         throw new Error(`ApiService ${error}`)
       })
   },
-  downloadTable(url, reset) {
+  downloadTable (url, reset) {
     api.download(url, reset)
   },
-  searchTable(url, text) {
-    return api.search(url, text)
+  searchTable (url, text) {
+    return api
+      .search(url, text)
       .then(data => {
         pipe(mapPaging, mapColumns, mapSort)(data)
 

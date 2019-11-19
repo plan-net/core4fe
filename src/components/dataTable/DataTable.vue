@@ -1,6 +1,6 @@
 <template>
   <div>
-<!--    <span><pre>{{options}}</pre></span>-->
+    <!--    <span><pre>{{options}}</pre></span>-->
     <component :is="selectedComponent">
       <v-data-table
         v-resize:debounce="onResize"
@@ -25,7 +25,10 @@
         <template v-slot:top>
           <v-container fluid>
             <v-row no-gutters>
-              <v-col cols="auto" lg="3">
+              <v-col
+                cols="auto"
+                lg="3"
+              >
                 <search :callback="search"></search>
               </v-col>
 
@@ -38,12 +41,14 @@
                 ></download>
               </v-col>
               <v-col cols="auto">
-                <advanced-options v-if="options.option.advanced_options"
-                                  :options="{column: column, dense: options.option.dense, fullscreen: options.option.fullscreen}"
-                                  :translation="translation"
-                                  :loading="loading"
-                                  @resetOptions="resetOptions()"
-                                  @saveOptions="saveOptions($event)"></advanced-options>
+                <advanced-options
+                  v-if="options.option.advanced_options"
+                  :options="{column: column, dense: options.option.dense, fullscreen: options.option.fullscreen}"
+                  :translation="translation"
+                  :loading="loading"
+                  @resetOptions="resetOptions()"
+                  @saveOptions="saveOptions($event)"
+                ></advanced-options>
               </v-col>
             </v-row>
           </v-container>
@@ -177,10 +182,10 @@ export default {
       debugger
       this.selectedComponent = data.fullscreen ? 'FullscreenWrapper' : 'RegularWrapper'
       this.options.option.fullscreen = data.fullscreen
-      this.getTableFromApi({column: data.column, dense: data.dense})
+      this.getTableFromApi({ column: data.column, dense: data.dense })
     },
     resetOptions () {
-      this.getTableFromApi({reset: true})
+      this.getTableFromApi({ reset: true })
     },
     getTableFromApi (params) {
       this.loading = true
@@ -192,7 +197,7 @@ export default {
           Object.assign(this.options, {
             action: data.action,
             itemsPerPage: data.itemsPerPage,
-            option: Object.assign(data.option, {fullscreen: this.options.option.fullscreen}),
+            option: Object.assign(data.option, { fullscreen: this.options.option.fullscreen }),
             page: data.page,
             paging: data.paging,
             sort: data.sort,

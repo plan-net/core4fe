@@ -14,30 +14,29 @@
 </template>
 
 <script>
-  export default {
-    name: "Search",
-    props: {
-      callback: {
-        type: Function,
-        required: true
-      }
+export default {
+  name: 'Search',
+  props: {
+    callback: {
+      type: Function,
+      required: true
+    }
+  },
+  data () {
+    return {
+      text: ''
+    }
+  },
+  methods: {
+    send () {
+      this.callback(this.text)
     },
-    data() {
-      return {
-        text: ''
-      }
-    },
-    methods: {
-      send () {
-        this.callback(this.text)
-      },
-      clear () {
-        this.callback('')
-      }
+    clear () {
+      this.callback('')
     }
   }
+}
 </script>
 
 <style scoped>
-
 </style>
