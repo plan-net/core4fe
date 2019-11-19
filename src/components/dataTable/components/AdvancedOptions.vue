@@ -1,11 +1,7 @@
 <template>
-  <v-toolbar flat>
-    <slot name="header"></slot>
-    <v-spacer></v-spacer>
     <v-dialog
       v-model="dialog"
-      max-width="500px"
-    >
+      max-width="500px">
       <template v-slot:activator="{ on }">
         <v-btn
           small
@@ -140,7 +136,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-toolbar>
 </template>
 
 <script>

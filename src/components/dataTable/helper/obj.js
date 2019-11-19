@@ -27,7 +27,7 @@ export const OPTIONS = {
   multiSort: true,
 
   option: {
-    advanced_options: null,
+    advanced_options: false,
     dense: true,
     fixed_header: null,
     footer: null,

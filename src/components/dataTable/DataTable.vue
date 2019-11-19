@@ -22,12 +22,30 @@
       @click:row="$emit('click-row', $event)"
     >
       <template v-slot:top>
-        <advanced-options
-          :options="{column: column, dense: options.option.dense}"
-          :translation="translation"
-          :loading="loading"
-          @resetOptions="resetOptions()"
-          @saveOptions="saveOptions($event)"></advanced-options>
+        <v-container fluid>
+          <v-row no-gutters>
+            <v-col cols="auto" lg="3">
+              <search :callback="search"></search>
+            </v-col>
+
+            <v-spacer></v-spacer>
+
+            <v-col cols="auto">
+              <download
+                class="mx-4"
+                :callback="download"
+              ></download>
+            </v-col>
+            <v-col cols="auto">
+                <advanced-options v-if="options.option.advanced_options"
+                  :options="{column: column, dense: options.option.dense}"
+                  :translation="translation"
+                  :loading="loading"
+                  @resetOptions="resetOptions()"
+                  @saveOptions="saveOptions($event)"></advanced-options>
+            </v-col>
+          </v-row>
+        </v-container>
       </template>
     </v-data-table>
   </div>
@@ -38,6 +56,8 @@ import debounce from 'debounce'
 import { clone } from 'core4ui/core4/helper.js'
 
 import AdvancedOptions from './components/AdvancedOptions'
+import Download from './components/Download'
+import Search from './components/Search'
 
 import apiService from './api/service'
 import resize from './helper/resize.js'
@@ -47,7 +67,9 @@ import { initialTranslation, OPTIONS } from './helper/obj.js'
 export default {
   name: 'data-table',
   components: {
-    AdvancedOptions
+    AdvancedOptions,
+    Download,
+    Search
   },
   directives: {
     resize
@@ -107,6 +129,39 @@ export default {
     }
   },
   methods: {
+    search (text) {
+      apiService.searchTable(this.config.url, text)
+        .then(data => {
+          this.startWatch = false
+
+          Object.assign(this.options, {
+            action: data.action,
+            itemsPerPage: data.itemsPerPage,
+            option: data.option,
+            page: data.page,
+            paging: data.paging,
+            sort: data.sort,
+            sortBy: data.sortBy,
+            sortDesc: data.sortDesc
+          })
+
+          this.column = data.column
+          this.rows = data.body
+
+          this.$nextTick(() => {
+            this.startWatch = true
+          })
+        })
+        .catch(data => {
+          // ToDo: error handling
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    download (reset) {
+      apiService.downloadTable(this.config.url, reset)
+    },
     onResize () {
       checkShadow(this.$el)
     },

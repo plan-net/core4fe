@@ -55,7 +55,6 @@ function mapSort (data) {
 }
 
 function buildRequest (options, params = {}) {
-  debugger
   if (options.reset) return {reset: options.reset}
   options = Object.assign(options, params)
 
@@ -97,7 +96,6 @@ function buildRequest (options, params = {}) {
 
 export default {
   getTable (url, options, payload = {}, params = {}) {
-    debugger
     return api.get(url, Object.assign(buildRequest(options, params), payload))
       .then(data => {
         pipe(mapPaging, mapColumns, mapSort)(data)
@@ -108,15 +106,18 @@ export default {
         throw new Error(`ApiService ${error}`)
       })
   },
-  // resetTable (url) {
-  //   return api.reset(url)
-  //     .then(data => {
-  //       pipe(mapPaging, mapColumns, mapSort)(data)
-  //
-  //       return data
-  //     })
-  //     .catch(error => {
-  //       throw new Error(`ApiService ${error}`)
-  //     })
-  // }
+  downloadTable(url, reset) {
+    api.download(url, reset)
+  },
+  searchTable(url, text) {
+    return api.search(url, text)
+      .then(data => {
+        pipe(mapPaging, mapColumns, mapSort)(data)
+
+        return data
+      })
+      .catch(error => {
+        throw new Error(`ApiService ${error}`)
+      })
+  }
 }
