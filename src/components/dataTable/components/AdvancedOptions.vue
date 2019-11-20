@@ -1,22 +1,9 @@
 <template>
   <v-dialog
-    v-model="dialog"
+
+    v-model="options"
     max-width="500px"
   >
-    <template v-slot:activator="{ on }">
-      <v-btn
-        small
-        outlined
-        class="mb-2"
-        :disabled="loading"
-        v-on="on"
-      >
-        <v-icon
-          class="mr-2"
-          x-small
-        >table_chart</v-icon>{{translation.advanced_options}}
-      </v-btn>
-    </template>
     <v-card>
       <v-card-title>
         <span>{{translation.advanced_options}}</span>
@@ -37,7 +24,7 @@
                   <v-list-item-content>Dense</v-list-item-content>
                   <v-list-item-action>
                     <v-btn-toggle
-                      v-model="own_options.dense"
+                      v-model="options.dense"
                       active-class="primary"
                       mandatory
                     >
@@ -63,7 +50,7 @@
                   <v-list-item-content>Maximize</v-list-item-content>
                   <v-list-item-action>
                     <v-btn-toggle
-                      v-model="own_options.fullscreen"
+                      v-model="options.fullscreen"
                       active-class="primary"
                       mandatory
                     >
@@ -101,13 +88,13 @@
                   <draggable
                     tag="tbody"
                     :componentData="componentData"
-                    :list="own_options.column"
+                    :list="options.column"
                     :disabled="!enabled"
                     :animation="100"
                     @start="dragging = true"
                     @end="dragging = false"
                   >
-                    <template v-for="element in own_options.column">
+                    <template v-for="element in options.column">
                       <tr
                         v-if="!element.key"
                         :key="element.value"
@@ -173,8 +160,6 @@
 
 <script>
 import draggable from 'vuedraggable'
-import debounce from 'debounce'
-import { clone } from 'core4ui/core4/helper.js'
 
 export default {
   name: 'advanced-options',
@@ -189,22 +174,12 @@ export default {
     translation: {
       type: Object,
       required: true
-    },
-    loading: {
-      type: Boolean,
-      required: true
     }
   },
   data: function () {
     return {
-      own_options: {
-        column: [],
-        dense: true,
-        fullscreen: null
-      },
       panel: [0, 1],
-
-      dialog: false,
+      dialog: true,
       enabled: true,
       dragging: false,
       componentData: {
@@ -215,29 +190,12 @@ export default {
       }
     }
   },
-  mounted () {
-    this.handler = debounce(this.handler, 500)
-  },
-  created () {
-    debugger
-    this.own_options = Object.assign(this.own_options, this.options)
-  },
-  watch: {
-    options: {
-      handler (newVal) {
-        this.handler(newVal)
-      }
-    }
-  },
   methods: {
-    handler (newVal) {
-      console.log('advanced watcher')
-      this.own_options = Object.assign(this.own_options, clone(newVal))
-    },
     save () {
-      debugger
+      // debugger
       this.dialog = !this.dialog
-      this.$emit('saveOptions', this.own_options)
+      console.log(this.options)
+      this.$emit('saveOptions', this.options)
     },
     reset () {
       this.dialog = !this.dialog

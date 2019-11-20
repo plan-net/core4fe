@@ -1,61 +1,75 @@
 <template>
-  <div>
-    <!--    <span><pre>{{options}}</pre></span>-->
-    <component :is="selectedComponent">
-      <v-data-table
-        v-resize:debounce="onResize"
-        :class="config.className"
-        :height="internalHeight"
-        :headers="headers"
-        :items="rows"
-        :options.sync="options"
-        :fixed-header="options.option.fixed_header"
-        :hide-default-header="options.option.hide_header"
-        :hide-default-footer="false"
-        :multi-sort="true"
-        :dense="options.option.dense"
-        item-key="id"
-        :items-per-page="options.itemsPerPage"
-        :server-items-length="options.paging.total_count"
-        :loading="loading"
-        :loading-text="translation.data_loading"
-        :footer-props="footerProps"
-        @click:row="$emit('click-row', $event)"
-      >
-        <template v-slot:top>
-          <v-container fluid>
-            <v-row no-gutters>
-              <v-col
-                cols="auto"
-                lg="3"
+  <component :is="selectedComponent">
+    <toolbar></toolbar>
+    <v-divider></v-divider>
+    <v-data-table
+      v-resize:debounce="onResize"
+      :class="config.className"
+      :height="internalHeight"
+      :headers="headers"
+      :items="rows"
+      :options.sync="options"
+      :fixed-header="options.option.fixed_header"
+      :hide-default-header="options.option.hide_header"
+      :hide-default-footer="false"
+      :multi-sort="true"
+      :dense="options.option.dense"
+      item-key="id"
+      :items-per-page="options.itemsPerPage"
+      :server-items-length="options.paging.total_count"
+      :loading="loading"
+      :loading-text="translation.data_loading"
+      :footer-props="footerProps"
+      @click:row="$emit('click-row', $event)"
+    >
+      <template v-slot:top>
+        <v-container fluid>
+          <v-row no-gutters>
+            <v-col
+              cols="auto"
+              lg="3"
+            >
+              <search :callback="search"></search>
+            </v-col>
+
+            <v-spacer></v-spacer>
+
+            <v-col cols="auto">
+              <download
+                class="mx-4"
+                :callback="download"
+              ></download>
+            </v-col>
+            <v-col cols="auto">
+              <advanced-options
+                v-if="options.option.advanced_options && advancedOptions"
+                :options="advancedOptions"
+                xxoptions="{column: column, dense: options.option.dense, fullscreen: options.option.fullscreen}"
+                :translation="translation"
+                :loading="loading"
+                @reset-options="resetOptions()"
+                @save-options="saveOptions($event)"
               >
-                <search :callback="search"></search>
-              </v-col>
 
-              <v-spacer></v-spacer>
-
-              <v-col cols="auto">
-                <download
-                  class="mx-4"
-                  :callback="download"
-                ></download>
-              </v-col>
-              <v-col cols="auto">
-                <advanced-options
-                  v-if="options.option.advanced_options"
-                  :options="{column: column, dense: options.option.dense, fullscreen: options.option.fullscreen}"
-                  :translation="translation"
-                  :loading="loading"
-                  @resetOptions="resetOptions()"
-                  @saveOptions="saveOptions($event)"
-                ></advanced-options>
-              </v-col>
-            </v-row>
-          </v-container>
-        </template>
-      </v-data-table>
-    </component>
-  </div>
+              </advanced-options>
+              <v-btn
+                small
+                outlined
+                class="mb-2"
+                :disabled="loading"
+                @click="openAdvancedOptions"
+              >
+                <v-icon
+                  class="mr-2"
+                  x-small
+                >table_chart</v-icon>{{translation.advanced_options}}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </v-data-table>
+  </component>
 </template>
 
 <script>
@@ -72,6 +86,7 @@ import apiService from './api/service'
 import resize from './helper/resize.js'
 import { checkShadow } from './helper/resize-functions.js'
 import { initialTranslation, OPTIONS } from './helper/obj.js'
+import Toolbar from './components/Toolbar'
 
 export default {
   name: 'data-table',
@@ -80,7 +95,9 @@ export default {
     FullscreenWrapper,
     AdvancedOptions,
     Download,
-    Search
+    Search,
+
+    Toolbar
   },
   directives: {
     resize
@@ -98,7 +115,7 @@ export default {
   },
   data: () => ({
     selectedComponent: 'RegularWrapper',
-
+    advancedOptions: null,
     startWatch: false,
     loading: false,
 
@@ -142,6 +159,11 @@ export default {
     }
   },
   methods: {
+    openAdvancedOptions () {
+      this.advancedOptions = this.$helper.clone(
+        { column: this.column, dense: this.options.option.dense, fullscreen: this.options.option.fullscreen }
+      )
+    },
     search (text) {
       apiService.searchTable(this.config.url, text)
         .then(data => {
