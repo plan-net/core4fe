@@ -16,24 +16,12 @@ export default {
   download (url, reset = 0) {
     let token = JSON.parse(localStorage.getItem('user')).token
 
-    window.open(
+    return window.open(
       `${
         process.env.VUE_APP_APIBASE_APP
       }${url}?token=${token}&download=1&reset=${reset | 0}`,
       '_self',
       ''
     )
-  },
-  search (url, text) {
-    let token = JSON.parse(localStorage.getItem('user')).token
-
-    return axios
-      .post(`${url}?token=${token}`, { filter: text })
-      .then(val => {
-        return val.data
-      })
-      .catch(error => {
-        throw new Error(`ApiService ${error}`)
-      })
   }
 }

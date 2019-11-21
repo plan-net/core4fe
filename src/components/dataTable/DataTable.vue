@@ -1,58 +1,34 @@
 <template>
   <div>
-    <!--    <span><pre>{{options}}</pre></span>-->
     <component :is="selectedComponent">
-      <v-data-table
-        v-resize:debounce="onResize"
-        :class="config.className"
-        :height="internalHeight"
-        :headers="headers"
-        :items="rows"
-        :options.sync="options"
-        :fixed-header="options.option.fixed_header"
-        :hide-default-header="options.option.hide_header"
-        :hide-default-footer="false"
-        :multi-sort="true"
-        :dense="options.option.dense"
-        item-key="id"
-        :items-per-page="options.itemsPerPage"
-        :server-items-length="options.paging.total_count"
-        :loading="loading"
-        :loading-text="translation.data_loading"
-        :footer-props="footerProps"
-        @click:row="$emit('click-row', $event)"
-      >
-        <template v-slot:top>
-          <v-container fluid>
-            <v-row no-gutters>
-              <v-col
-                cols="auto"
-                lg="3"
-              >
-                <search :callback="search"></search>
-              </v-col>
-
-              <v-spacer></v-spacer>
-
-              <v-col cols="auto">
-                <download
-                  class="mx-4"
-                  :callback="download"
-                ></download>
-              </v-col>
-              <v-col cols="auto">
-                <advanced-options
-                  v-if="options.option.advanced_options"
-                  :options="{column: column, dense: options.option.dense, fullscreen: options.option.fullscreen}"
-                  :translation="translation"
-                  :loading="loading"
-                  @resetOptions="resetOptions()"
-                  @saveOptions="saveOptions($event)"
-                ></advanced-options>
-              </v-col>
-            </v-row>
-          </v-container>
-        </template>
+      <toolbar :url="config.url"
+               :fullscreen="selectedComponent === 'FullscreenWrapper'"
+               :dense="options.option.dense"
+               :translation="translation"
+               :advanced="options.option.advanced_options"
+               :column="column"
+               @resize="resize"
+               @dense="dense"
+               @sort="sort">
+      </toolbar>
+      <v-data-table :class="config.className"
+                    :height="internalHeight"
+                    :headers="headers"
+                    :items="rows"
+                    :options.sync="options"
+                    :fixed-header="options.option.fixed_header"
+                    :hide-default-header="options.option.hide_header"
+                    :hide-default-footer="false"
+                    :multi-sort="true"
+                    :dense="options.option.dense"
+                    item-key="id"
+                    :items-per-page="options.itemsPerPage"
+                    :server-items-length="options.paging.total_count"
+                    :loading="loading"
+                    :loading-text="translation.data_loading"
+                    :footer-props="footerProps"
+                    v-resize:debounce="onResize"
+                    @click:row="$emit('click-row', $event)">
       </v-data-table>
     </component>
   </div>
@@ -62,11 +38,9 @@
 import debounce from 'debounce'
 import { clone } from 'core4ui/core4/helper.js'
 
-import AdvancedOptions from './components/AdvancedOptions'
-import Download from './components/Download'
-import Search from './components/Search'
 import RegularWrapper from './components/RegularWrapper'
 import FullscreenWrapper from './components/FullscreenWrapper'
+import Toolbar from './components/Toolbar'
 
 import apiService from './api/service'
 import resize from './helper/resize.js'
@@ -78,9 +52,7 @@ export default {
   components: {
     RegularWrapper,
     FullscreenWrapper,
-    AdvancedOptions,
-    Download,
-    Search
+    Toolbar
   },
   directives: {
     resize
@@ -142,75 +114,34 @@ export default {
     }
   },
   methods: {
-    search (text) {
-      apiService.searchTable(this.config.url, text)
-        .then(data => {
-          this.startWatch = false
-
-          Object.assign(this.options, {
-            action: data.action,
-            itemsPerPage: data.itemsPerPage,
-            option: data.option,
-            page: data.page,
-            paging: data.paging,
-            sort: data.sort,
-            sortBy: data.sortBy,
-            sortDesc: data.sortDesc
-          })
-
-          this.column = data.column
-          this.rows = data.body
-
-          this.$nextTick(() => {
-            this.startWatch = true
-          })
-        })
-        .catch(data => {
-          // ToDo: error handling
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
-    download (reset) {
-      apiService.downloadTable(this.config.url, reset)
-    },
     onResize () {
       checkShadow(this.$el)
     },
-    saveOptions (data) {
-      debugger
-      this.selectedComponent = data.fullscreen ? 'FullscreenWrapper' : 'RegularWrapper'
-      this.options.option.fullscreen = data.fullscreen
-      this.getTableFromApi({ column: data.column, dense: data.dense })
+    dense () {
+      this.getTableFromApi({dense: !this.options.option.dense})
     },
-    resetOptions () {
-      this.getTableFromApi({ reset: true })
+    resize () {
+      if (this.selectedComponent === 'RegularWrapper') {
+        this.selectedComponent = 'FullscreenWrapper'
+      } else {
+        this.selectedComponent = 'RegularWrapper'
+      }
+    },
+    search (text) {
+      this.getTableFromApi({filter: text})
+    },
+    sort (data) {
+      this.getTableFromApi(data)
     },
     getTableFromApi (params) {
       this.loading = true
 
-      return apiService.getTable(this.config.url, Object.assign(clone(this.options), params), this.config.payload)
+      let cloneOptions = clone(this.options) // lose connection to the object in data-table vuetify component
+      let updatedWithParam = Object.assign(cloneOptions, params)
+
+      return apiService.getTable(this.config.url, updatedWithParam, this.config.payload)
         .then(data => {
-          this.startWatch = false
-
-          Object.assign(this.options, {
-            action: data.action,
-            itemsPerPage: data.itemsPerPage,
-            option: Object.assign(data.option, { fullscreen: this.options.option.fullscreen }),
-            page: data.page,
-            paging: data.paging,
-            sort: data.sort,
-            sortBy: data.sortBy,
-            sortDesc: data.sortDesc
-          })
-
-          this.column = data.column
-          this.rows = data.body
-
-          this.$nextTick(() => {
-            this.startWatch = true
-          })
+          this.response(data)
         })
         .catch(data => {
           // ToDo: error handling
@@ -218,6 +149,27 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    response (data) {
+      this.startWatch = false
+
+      Object.assign(this.options, {
+        action: data.action,
+        itemsPerPage: data.itemsPerPage,
+        option: data.option,
+        page: data.page,
+        paging: data.paging,
+        sort: data.sort,
+        sortBy: data.sortBy,
+        sortDesc: data.sortDesc
+      })
+
+      this.column = data.column
+      this.rows = data.body
+
+      this.$nextTick(() => {
+        this.startWatch = true
+      })
     }
   },
   beforeDestroy () {
@@ -231,6 +183,7 @@ div >>> tbody tr td {
   cursor: pointer;
 }
 </style>
+
 <style scoped lang="scss">
 .shadowed {
   position: relative;

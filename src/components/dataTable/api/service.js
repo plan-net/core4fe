@@ -101,31 +101,15 @@ function buildRequest (options, params = {}) {
 }
 
 export default {
-  getTable (url, options, payload = {}, params = {}) {
+  getTable (url, options, payload = {}) {
     return api
-      .get(url, Object.assign(buildRequest(options, params), payload))
-      .then(data => {
-        pipe(mapPaging, mapColumns, mapSort)(data)
-
-        return data
-      })
+      .get(url, Object.assign(buildRequest(options), payload))
+      .then(data => pipe(mapPaging, mapColumns, mapSort)(data))
       .catch(error => {
         throw new Error(`ApiService ${error}`)
       })
   },
   downloadTable (url, reset) {
-    api.download(url, reset)
-  },
-  searchTable (url, text) {
-    return api
-      .search(url, text)
-      .then(data => {
-        pipe(mapPaging, mapColumns, mapSort)(data)
-
-        return data
-      })
-      .catch(error => {
-        throw new Error(`ApiService ${error}`)
-      })
+    return api.download(url, reset)
   }
 }

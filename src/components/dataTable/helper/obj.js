@@ -34,8 +34,7 @@ export const OPTIONS = {
     height: null,
     hide_header: null,
     info: null,
-    search: null,
-    fullscreen: false
+    search: null
   },
 
   paging: {
