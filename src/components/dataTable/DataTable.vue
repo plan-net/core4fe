@@ -7,6 +7,8 @@
                :translation="translation"
                :advanced="options.option.advanced_options"
                :column="column"
+               :title="config.title || ''"
+               @search="search"
                @resize="resize"
                @dense="dense"
                @sort="sort">
@@ -40,7 +42,7 @@ import { clone } from 'core4ui/core4/helper.js'
 
 import RegularWrapper from './components/RegularWrapper'
 import FullscreenWrapper from './components/FullscreenWrapper'
-import Toolbar from './components/Toolbar'
+import Toolbar from './components/options/Toolbar'
 
 import apiService from './api/service'
 import resize from './helper/resize.js'
@@ -127,8 +129,8 @@ export default {
         this.selectedComponent = 'RegularWrapper'
       }
     },
-    search (text) {
-      this.getTableFromApi({filter: text})
+    search (data) {
+      this.getTableFromApi(data)
     },
     sort (data) {
       this.getTableFromApi(data)
@@ -141,7 +143,25 @@ export default {
 
       return apiService.getTable(this.config.url, updatedWithParam, this.config.payload)
         .then(data => {
-          this.response(data)
+          this.startWatch = false
+
+          Object.assign(this.options, {
+            action: data.action,
+            itemsPerPage: data.itemsPerPage,
+            option: data.option,
+            page: data.page,
+            paging: data.paging,
+            sort: data.sort,
+            sortBy: data.sortBy,
+            sortDesc: data.sortDesc
+          })
+
+          this.column = data.column
+          this.rows = data.body
+
+          this.$nextTick(() => {
+            this.startWatch = true
+          })
         })
         .catch(data => {
           // ToDo: error handling
@@ -149,27 +169,6 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    },
-    response (data) {
-      this.startWatch = false
-
-      Object.assign(this.options, {
-        action: data.action,
-        itemsPerPage: data.itemsPerPage,
-        option: data.option,
-        page: data.page,
-        paging: data.paging,
-        sort: data.sort,
-        sortBy: data.sortBy,
-        sortDesc: data.sortDesc
-      })
-
-      this.column = data.column
-      this.rows = data.body
-
-      this.$nextTick(() => {
-        this.startWatch = true
-      })
     }
   },
   beforeDestroy () {

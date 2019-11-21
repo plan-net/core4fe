@@ -3,29 +3,16 @@
              flat
              :extended="extended"
              :extension-height="extensionHeight">
-    <template v-if="searchActive">
-      <!-- Search -->
-      <v-text-field ref="searchRef"
-                    class="search"
-                    hide-details
-                    filled
-                    dense
-                    single-line
-                    clearable
-                    prepend-inner-icon="search"
-                    append-icon="send"
-                    v-on:keyup.enter="search"
-                    v-on:keyup.esc="searchActive = false"
-                    @click:append="search"
-                    @click:clear="clear">
-      </v-text-field>
-    </template>
 
+    <!-- Search -->
+    <template v-if="searchActive">
+      <search :searchActive="searchActive" @closeInput="onSearch"></search>
+    </template>
     <template v-else>
-      <v-toolbar-title>Optional Datatable Title</v-toolbar-title>
+      <v-toolbar-title v-if="title">{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <!-- Search activator btn-->
+      <!-- Search input activator btn-->
       <v-btn small icon @click="searchActive = true">
         <v-icon>search</v-icon>
       </v-btn>
@@ -70,18 +57,19 @@
 </template>
 
 <script>
-  import { clone } from 'core4ui/core4/helper.js'
-
+  import Search from './Search'
   import Download from './Download'
   import AdvancedOptions from "./AdvancedOptions"
 
   export default {
     name: 'Toolbar',
     components: {
+      Search,
       Download,
       AdvancedOptions
     },
     props: {
+      title: String,
       url: String,
       fullscreen: Boolean,
       dense: Boolean,
@@ -100,16 +88,13 @@
         advancedActive: false
       }
     },
-    watch: {
-      searchActive (newVal) {
-        if (newVal) {
-          this.$nextTick(function () {
-            this.$refs.searchRef.focus()
-          })
-        }
-      }
-    },
     methods: {
+      onSearch (data) {
+        let {type, text=''} = data
+
+        this.$emit('search', {filter: text})
+        if (type === 'esc' || type === 'clear')  this.searchActive = false
+      },
       onResize () {
         this.$emit('resize')
         this.resizeIcon = !this.resizeIcon
@@ -134,28 +119,5 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .search.v-text-field.v-input--dense {
-    margin-left: -16px !important;
-    margin-right: -16px !important;
-    height: 48px;
-    ::v-deep .v-input__slot {
-      height: 48px;
-    }
-  }
-
-  ::v-deep
-  .search.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--single-line
-  .v-input__prepend-inner,
-  ::v-deep
-  .search.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo)
-  .v-input__append-inner {
-    margin-top: 14px;
-  }
-
-  ::v-deep
-  .search.v-text-field--filled.v-text-field--single-line.v-input--dense
-  input {
-    margin-top: 12px;
-  }
+<style scoped>
 </style>

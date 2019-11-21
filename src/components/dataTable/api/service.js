@@ -97,6 +97,10 @@ function buildRequest (options, params = {}) {
     result['dense'] = options.dense
   }
 
+  if ('filter' in options) {
+    result['filter'] = options.filter
+  }
+
   return result
 }
 
