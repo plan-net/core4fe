@@ -34,13 +34,13 @@ export default {
   },
   methods: {
     submit () {
-      this.$emit('closeInput', {type: (this.text.length) ? 'submit' : 'clear', text: this.text})
+      this.$emit('closeInput', { type: (this.text.length) ? 'submit' : 'clear', text: this.text })
     },
     clear () {
-      this.$emit('closeInput', {type:'clear'})
+      this.$emit('closeInput', { type: 'clear' })
     },
     esc () {
-      this.$emit('closeInput', {type: 'esc'})
+      this.$emit('closeInput', { type: 'esc' })
     }
   }
 }

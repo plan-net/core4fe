@@ -96,15 +96,15 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.internalColumn = clone(this.column)
   },
   methods: {
     save () {
-      this.$emit('closeDialog', {column: this.internalColumn})
+      this.$emit('closeDialog', { column: this.internalColumn })
     },
     reset () {
-      this.$emit('closeDialog', {reset: true})
+      this.$emit('closeDialog', { reset: true })
     },
     cancel () {
       this.$emit('closeDialog', false)
@@ -117,13 +117,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.flip-list-move {
-  transition: transform 0.5s;
-}
-.no-move {
-  transition: transform 0s;
-}
-.unclickable {
-  pointer-events: none;
-}
+  .flip-list-move {
+    transition: transform 0.5s;
+  }
+  .no-move {
+    transition: transform 0s;
+  }
+  .unclickable {
+    pointer-events: none;
+  }
 </style>

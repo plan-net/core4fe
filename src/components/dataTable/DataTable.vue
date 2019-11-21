@@ -120,7 +120,7 @@ export default {
       checkShadow(this.$el)
     },
     dense () {
-      this.getTableFromApi({dense: !this.options.option.dense})
+      this.getTableFromApi({ dense: !this.options.option.dense })
     },
     resize () {
       if (this.selectedComponent === 'RegularWrapper') {

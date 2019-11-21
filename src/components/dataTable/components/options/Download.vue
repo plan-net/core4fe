@@ -55,7 +55,7 @@ export default {
       this.beforeLeaveDialog()
     },
     download () {
-      apiService.downloadTable(this.url,  this.reset)
+      apiService.downloadTable(this.url, this.reset)
       this.beforeLeaveDialog()
     },
     beforeLeaveDialog () {

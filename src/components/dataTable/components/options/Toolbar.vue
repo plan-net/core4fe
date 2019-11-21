@@ -57,66 +57,66 @@
 </template>
 
 <script>
-  import Search from './Search'
-  import Download from './Download'
-  import AdvancedOptions from "./AdvancedOptions"
+import Search from './Search'
+import Download from './Download'
+import AdvancedOptions from './AdvancedOptions'
 
-  export default {
-    name: 'Toolbar',
-    components: {
-      Search,
-      Download,
-      AdvancedOptions
-    },
-    props: {
-      title: String,
-      url: String,
-      fullscreen: Boolean,
-      dense: Boolean,
-      advanced: Boolean,
-      translation: Object,
-      column: Array
-    },
-    data () {
-      return {
-        resizeIcon: false,
-        extended: false,
-        extensionHeight: 48,
+export default {
+  name: 'Toolbar',
+  components: {
+    Search,
+    Download,
+    AdvancedOptions
+  },
+  props: {
+    title: String,
+    url: String,
+    fullscreen: Boolean,
+    dense: Boolean,
+    advanced: Boolean,
+    translation: Object,
+    column: Array
+  },
+  data () {
+    return {
+      resizeIcon: false,
+      extended: false,
+      extensionHeight: 48,
 
-        searchActive: false,
-        downloadActive: false,
-        advancedActive: false
-      }
-    },
-    methods: {
-      onSearch (data) {
-        let {type, text=''} = data
+      searchActive: false,
+      downloadActive: false,
+      advancedActive: false
+    }
+  },
+  methods: {
+    onSearch (data) {
+      let { type, text = '' } = data
 
-        this.$emit('search', {filter: text})
-        if (type === 'esc' || type === 'clear')  this.searchActive = false
-      },
-      onResize () {
-        this.$emit('resize')
-        this.resizeIcon = !this.resizeIcon
-      },
-      onDense () {
-        this.$emit('dense')
-      },
-      onDownload () {
-        this.downloadActive = !this.downloadActive
-      },
-      onAdvanced (data) {
-        if (data) this.$emit('sort', data)
-        this.advancedActive = !this.advancedActive
-      },
-      search () {
-        this.searchActive = false
-      },
-      clear () {
-        console.log('clear')
-      }
+      this.$emit('search', { filter: text })
+      if (type === 'esc' || type === 'clear') this.searchActive = false
+    },
+    onResize () {
+      this.$emit('resize')
+      this.resizeIcon = !this.resizeIcon
+    },
+    onDense () {
+      this.$emit('dense')
+    },
+    onDownload () {
+      this.downloadActive = !this.downloadActive
+    },
+    onAdvanced (data) {
+      if (data) this.$emit('sort', data)
+      this.advancedActive = !this.advancedActive
+    },
+    search () {
+      this.searchActive = false
+    },
+    clear () {
+      console.log('clear')
     }
   }
+}
 </script>
 
 <style scoped>
