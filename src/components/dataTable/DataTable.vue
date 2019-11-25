@@ -1,19 +1,6 @@
 <template>
   <div>
     <component :is="selectedComponent">
-      <toolbar :url="config.url"
-               :fullscreen="selectedComponent === 'FullscreenWrapper'"
-               :dense="options.option.dense"
-               :translation="translation"
-               :advanced="options.option.advanced_options"
-               :column="column"
-               :search="options.option.search"
-               :title="config.title || ''"
-               @search="onSearch"
-               @maximize="onMaximize"
-               @dense="onDense"
-               @sort="onSort">
-      </toolbar>
       <v-data-table :class="config.className"
                     :height="internalHeight"
                     :headers="headers"
@@ -21,7 +8,7 @@
                     :options.sync="options"
                     :fixed-header="options.option.fixed_header"
                     :hide-default-header="options.option.hide_header"
-                    :hide-default-footer="false"
+                    :hide-default-footer="!options.option.footer"
                     :multi-sort="true"
                     :dense="options.option.dense"
                     item-key="id"
@@ -32,6 +19,27 @@
                     :footer-props="footerProps"
                     v-resize:debounce="onResize"
                     @click:row="$emit('click-row', $event)">
+        <template v-slot:top>
+          <toolbar :url="config.url"
+                   :fullscreen="selectedComponent === 'FullscreenWrapper'"
+                   :dense="options.option.dense"
+                   :translation="translation"
+                   :advanced="options.option.advanced_options"
+                   :column="column"
+                   :search="options.option.search"
+                   :title="config.title || ''"
+                   @search="onSearch"
+                   @maximize="onMaximize"
+                   @dense="onDense"
+                   @sort="onSort">
+          </toolbar>
+        </template>
+
+        <template v-slot:footer v-if="!options.option.footer && options.option.info">
+          <td :colspan="headers.length">
+            <div v-html="options.option.info"></div>
+          </td>
+        </template>
       </v-data-table>
     </component>
   </div>
