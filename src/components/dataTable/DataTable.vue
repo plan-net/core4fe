@@ -1,48 +1,49 @@
 <template>
-  <div>
-    <component :is="selectedComponent">
-      <v-data-table :class="config.className"
-                    :height="internalHeight"
-                    :headers="headers"
-                    :items="rows"
-                    :options.sync="options"
-                    :fixed-header="options.option.fixed_header"
-                    :hide-default-header="options.option.hide_header"
-                    :hide-default-footer="!options.option.footer"
-                    :multi-sort="true"
-                    :dense="options.option.dense"
-                    item-key="id"
-                    :items-per-page="options.itemsPerPage"
-                    :server-items-length="options.paging.total_count"
-                    :loading="loading"
-                    :loading-text="translation.dataLoading"
-                    :footer-props="footerProps"
-                    v-resize:debounce="onResize"
-                    @click:row="$emit('click-row', $event)">
-        <template v-slot:top>
-          <toolbar :url="config.url"
-                   :fullscreen="selectedComponent === 'FullscreenWrapper'"
-                   :dense="options.option.dense"
-                   :translation="translation"
-                   :advanced="options.option.advanced_options"
-                   :column="column"
-                   :search="options.option.search"
-                   :title="config.title || ''"
-                   @search="onSearch"
-                   @maximize="onMaximize"
-                   @dense="onDense"
-                   @sort="onSort">
-          </toolbar>
-        </template>
+  <component :is="selectedComponent">
+    <v-data-table :class="config.className"
+                  :height="internalHeight"
+                  :headers="headers"
+                  :items="rows"
+                  :options.sync="options"
+                  :fixed-header="options.option.fixed_header"
+                  :hide-default-header="options.option.hide_header"
+                  :hide-default-footer="!options.option.footer"
+                  :multi-sort="true"
+                  :dense="options.option.dense"
+                  item-key="id"
+                  :items-per-page="options.itemsPerPage"
+                  :server-items-length="options.paging.total_count"
+                  :loading="loading"
+                  :loading-text="translation.dataLoading"
+                  :footer-props="footerProps"
+                  v-resize:debounce="onResize"
+                  @click:row="$emit('click-row', $event)">
 
-        <template v-slot:footer v-if="!options.option.footer && options.option.info">
-          <td :colspan="headers.length">
-            <div v-html="options.option.info"></div>
-          </td>
-        </template>
-      </v-data-table>
-    </component>
-  </div>
+      <!-- Toolbar -->
+      <template v-slot:top>
+        <toolbar :url="config.url"
+                 :fullscreen="selectedComponent === 'FullscreenWrapper'"
+                 :dense="options.option.dense"
+                 :translation="translation"
+                 :advanced="options.option.advanced_options"
+                 :column="column"
+                 :search="options.option.search"
+                 :title="config.title || ''"
+                 @search="onSearch"
+                 @maximize="onMaximize"
+                 @dense="onDense"
+                 @sort="onSort">
+        </toolbar>
+      </template>
+
+      <!-- Footer-->
+      <template v-slot:footer v-if="!options.option.footer && options.option.info">
+        <td :colspan="headers.length">
+          <div v-html="options.option.info"></div>
+        </td>
+      </template>
+    </v-data-table>
+  </component>
 </template>
 
 <script>
