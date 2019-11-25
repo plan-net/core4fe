@@ -4,7 +4,7 @@
 
       <!-- Title -->
       <v-card-title>
-        <span>{{translation.advanced_options}}</span>
+        <span>{{translation.advancedOptions}}</span>
         <v-spacer></v-spacer>
       </v-card-title>
 
@@ -14,7 +14,7 @@
           <template v-slot:default>
             <thead>
             <tr>
-              <th class="text-left">{{translation.drag_drop_column}}</th>
+              <th class="text-left">{{translation.dragDropColumn}}</th>
               <th class="text-left">{{translation.show}}</th>
             </tr>
             </thead>
@@ -53,7 +53,7 @@
       <!-- Action buttons -->
       <v-card-actions>
         <!-- Reset btn -->
-        <v-btn text small color="primary" @click="reset">{{translation.reset_options}}</v-btn>
+        <v-btn text small color="primary" @click="reset">{{translation.resetOptions}}</v-btn>
 
         <v-spacer></v-spacer>
 

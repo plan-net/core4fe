@@ -6,9 +6,7 @@ export default {
 
     return axios
       .post(`${url}?token=${token}`, Object.assign(params, {}))
-      .then(val => {
-        return val.data
-      })
+      .then(val => val.data)
       .catch(error => {
         throw new Error(`ApiService ${error}`)
       })

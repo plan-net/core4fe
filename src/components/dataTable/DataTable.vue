@@ -7,11 +7,12 @@
                :translation="translation"
                :advanced="options.option.advanced_options"
                :column="column"
+               :search="options.option.search"
                :title="config.title || ''"
-               @search="search"
-               @resize="resize"
-               @dense="dense"
-               @sort="sort">
+               @search="onSearch"
+               @resize="onResize"
+               @dense="onDense"
+               @sort="onSort">
       </toolbar>
       <v-data-table :class="config.className"
                     :height="internalHeight"
@@ -27,9 +28,9 @@
                     :items-per-page="options.itemsPerPage"
                     :server-items-length="options.paging.total_count"
                     :loading="loading"
-                    :loading-text="translation.data_loading"
+                    :loading-text="translation.dataLoading"
                     :footer-props="footerProps"
-                    v-resize:debounce="onResize"
+                    v-resize:debounce="vResize"
                     @click:row="$emit('click-row', $event)">
       </v-data-table>
     </component>
@@ -76,6 +77,8 @@ export default {
     startWatch: false,
     loading: false,
 
+    filter: '',
+
     // config related to vuetify datatable
     options: Object.assign({}, OPTIONS),
     rows: [],
@@ -112,34 +115,35 @@ export default {
       return this.column.filter(item => !item.hide)
     },
     internalHeight () {
-      return this.options.fixed_header === true ? (this.options.height || 555) : null
+      return this.options.option.fixed_header === true ? (this.options.option.height || 555) : null
     }
   },
   methods: {
-    onResize () {
+    vResize () {
       checkShadow(this.$el)
     },
-    dense () {
+    onDense () {
       this.getTableFromApi({ dense: !this.options.option.dense })
     },
-    resize () {
+    onResize () {
       if (this.selectedComponent === 'RegularWrapper') {
         this.selectedComponent = 'FullscreenWrapper'
       } else {
         this.selectedComponent = 'RegularWrapper'
       }
     },
-    search (data) {
+    onSearch (data) {
+      this.filter = data.filter
       this.getTableFromApi(data)
     },
-    sort (data) {
+    onSort (data) {
       this.getTableFromApi(data)
     },
     getTableFromApi (params) {
       this.loading = true
 
       let cloneOptions = clone(this.options) // lose connection to the object in data-table vuetify component
-      let updatedWithParam = Object.assign(cloneOptions, params)
+      let updatedWithParam = Object.assign(cloneOptions, { filter: this.filter }, params)
 
       return apiService.getTable(this.config.url, updatedWithParam, this.config.payload)
         .then(data => {

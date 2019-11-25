@@ -1,12 +1,14 @@
 export function checkShadow (el) {
-  const tableWidth = el.querySelector('.v-data-table-header').offsetWidth
+  const tableWidth = el.querySelector('.v-data-table') && el.querySelector('.v-data-table').offsetWidth
   const docWidth = document.querySelector('.v-application').offsetWidth
+
   if (tableWidth > docWidth) {
     el.classList.add('shadowed')
   } else {
     el.classList.remove('shadowed')
   }
 }
+
 export function adjustFixedHeaderHeight (el) {
   const viewportOffset = el.getBoundingClientRect()
   // these are relative to the viewport, i.e. the window

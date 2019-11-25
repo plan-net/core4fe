@@ -13,17 +13,17 @@
       <v-spacer></v-spacer>
 
       <!-- Search input activator btn-->
-      <v-btn small icon @click="searchActive = true">
+      <v-btn small icon v-if="search" @click="searchActive = true">
         <v-icon>search</v-icon>
       </v-btn>
     </template>
 
-    <v-divider class="mx-4" vertical></v-divider>
+    <v-divider v-if="search" class="mx-4" vertical></v-divider>
 
     <!-- Advanced-options -->
-    <v-tooltip bottom>
+    <v-tooltip bottom v-if="advanced">
       <template v-slot:activator="{ on }">
-        <v-btn small icon v-if="advanced" @click="onAdvanced(false)">
+        <v-btn small icon @click="onAdvanced(false)">
           <v-icon v-on="on" small>sort</v-icon>
           <advanced-options v-if="advancedActive"
                             :dialog="advancedActive"
@@ -33,7 +33,7 @@
           </advanced-options>
         </v-btn>
       </template>
-      <span>{{translation.advanced_options}}</span>
+      <span>{{translation.advancedOptions}}</span>
     </v-tooltip>
 
     <!-- Download -->
@@ -97,7 +97,8 @@ export default {
     dense: Boolean,
     advanced: Boolean,
     translation: Object,
-    column: Array
+    column: Array,
+    search: Boolean
   },
   data () {
     return {
@@ -130,12 +131,6 @@ export default {
     onAdvanced (data) {
       if (data) this.$emit('sort', data)
       this.advancedActive = !this.advancedActive
-    },
-    search () {
-      this.searchActive = false
-    },
-    clear () {
-      console.log('clear')
     }
   }
 }

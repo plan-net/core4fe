@@ -2,13 +2,13 @@
   <v-dialog persistent v-model="dialog" max-width="500px">
     <v-card>
 
-      <v-card-title>{{translation.download_title}}</v-card-title>
+      <v-card-title>{{translation.downloadTitle}}</v-card-title>
 
       <v-card-text>
         <v-switch v-model="reset"
                   class="mx-2 mp-4"
                   color="primary"
-                  :label="translation.download_switch_label">
+                  :label="translation.downloadSwitchLabel">
         </v-switch>
       </v-card-text>
 

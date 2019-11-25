@@ -10,17 +10,17 @@ export const mapDict = {
 export const initialTranslation = {
   cancel: 'Cancel',
   save: 'Save',
-  data_loading: 'Data loading ...',
+  dataLoading: 'Data loading ...',
   itemsPerPageAllText: 'All',
   itemsPerPageText: 'Rows per page',
-  advanced_options: 'Advanced options',
+  advancedOptions: 'Advanced options',
   show: 'Show',
-  drag_drop_column: 'Drag & Drop columns',
-  reset_options: 'Reset options',
+  dragDropColumn: 'Drag & Drop columns',
+  resetOptions: 'Reset options',
   dense: 'Dense',
   download: 'Download',
-  download_title: 'Stream the table content to a CSV file',
-  download_switch_label: 'Ignore the current column ordering and visibility',
+  downloadTitle: 'Stream the table content to a CSV file',
+  downloadSwitchLabel: 'Ignore the current column ordering and visibility',
   fullscreen: 'Fullscreen',
   fullscreen_exit: 'Fullscreen exit'
 }
@@ -36,8 +36,8 @@ export const OPTIONS = {
   multiSort: true,
 
   option: {
-    advanced_options: true,
-    dense: true,
+    advanced_options: null,
+    dense: null,
     fixed_header: null,
     footer: null,
     height: null,
