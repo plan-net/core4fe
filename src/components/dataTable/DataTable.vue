@@ -10,7 +10,7 @@
                :search="options.option.search"
                :title="config.title || ''"
                @search="onSearch"
-               @resize="onResize"
+               @maximize="onMaximize"
                @dense="onDense"
                @sort="onSort">
       </toolbar>
@@ -30,7 +30,7 @@
                     :loading="loading"
                     :loading-text="translation.dataLoading"
                     :footer-props="footerProps"
-                    v-resize:debounce="vResize"
+                    v-resize:debounce="onResize"
                     @click:row="$emit('click-row', $event)">
       </v-data-table>
     </component>
@@ -119,13 +119,13 @@ export default {
     }
   },
   methods: {
-    vResize () {
+    onResize () {
       checkShadow(this.$el)
     },
     onDense () {
       this.getTableFromApi({ dense: !this.options.option.dense })
     },
-    onResize () {
+    onMaximize () {
       if (this.selectedComponent === 'RegularWrapper') {
         this.selectedComponent = 'FullscreenWrapper'
       } else {

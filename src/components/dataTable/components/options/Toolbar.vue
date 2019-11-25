@@ -66,7 +66,7 @@
     <!-- Fullscreen -->
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn small icon v-on="on" @click="onResize">
+        <v-btn small icon v-on="on" @click="onMaximize">
           <v-icon small v-show="fullscreen">fullscreen_exit</v-icon>
           <v-icon small v-show="!fullscreen">fullscreen</v-icon>
         </v-btn>
@@ -102,7 +102,6 @@ export default {
   },
   data () {
     return {
-      resizeIcon: false,
       extended: false,
       extensionHeight: 48,
 
@@ -118,9 +117,8 @@ export default {
       this.$emit('search', { filter: text })
       if (type === 'esc' || type === 'clear') this.searchActive = false
     },
-    onResize () {
-      this.$emit('resize')
-      this.resizeIcon = !this.resizeIcon
+    onMaximize () {
+      this.$emit('maximize')
     },
     onDense () {
       this.$emit('dense')
