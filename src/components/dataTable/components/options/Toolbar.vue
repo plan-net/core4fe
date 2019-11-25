@@ -21,37 +21,59 @@
     <v-divider class="mx-4" vertical></v-divider>
 
     <!-- Advanced-options -->
-    <v-btn small icon v-if="advanced" @click="onAdvanced(false)">
-      <v-icon small>sort</v-icon>
-      <advanced-options v-if="advancedActive"
-                        :dialog="advancedActive"
-                        :translation="translation"
-                        :column="column"
-                        @closeDialog="onAdvanced">
-      </advanced-options>
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn small icon v-if="advanced" @click="onAdvanced(false)">
+          <v-icon v-on="on" small>sort</v-icon>
+          <advanced-options v-if="advancedActive"
+                            :dialog="advancedActive"
+                            :translation="translation"
+                            :column="column"
+                            @closeDialog="onAdvanced">
+          </advanced-options>
+        </v-btn>
+      </template>
+      <span>{{translation.advanced_options}}</span>
+    </v-tooltip>
 
     <!-- Download -->
-    <v-btn small icon @click="onDownload">
-      <v-icon small>cloud_download</v-icon>
-      <download v-if="downloadActive"
-                :url="url"
-                :dialog="downloadActive"
-                @closeDialog="downloadActive = !downloadActive">
-      </download>
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn small icon v-on="on" @click="onDownload">
+          <v-icon small>cloud_download</v-icon>
+          <download v-if="downloadActive"
+                    :url="url"
+                    :dialog="downloadActive"
+                    :translation="translation"
+                    @closeDialog="downloadActive = !downloadActive">
+          </download>
+        </v-btn>
+      </template>
+      <span>{{translation.download}}</span>
+    </v-tooltip>
 
     <!-- Dense -->
-    <v-btn small icon @click="onDense">
-      <v-icon small v-show="dense">format_line_spacing</v-icon>
-      <v-icon small v-show="!dense">format_align_justify</v-icon>
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn small icon  v-on="on" @click="onDense">
+          <v-icon small v-show="dense">format_line_spacing</v-icon>
+          <v-icon small v-show="!dense">format_align_justify</v-icon>
+        </v-btn>
+      </template>
+      <span>{{translation.dense}}</span>
+    </v-tooltip>
 
     <!-- Fullscreen -->
-    <v-btn small icon @click="onResize">
-      <v-icon small v-show="fullscreen">fullscreen_exit</v-icon>
-      <v-icon small v-show="!fullscreen">fullscreen</v-icon>
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn small icon v-on="on" @click="onResize">
+          <v-icon small v-show="fullscreen">fullscreen_exit</v-icon>
+          <v-icon small v-show="!fullscreen">fullscreen</v-icon>
+        </v-btn>
+      </template>
+      <span v-show="fullscreen" >{{translation.fullscreen_exit}}</span>
+      <span v-show="!fullscreen">{{translation.fullscreen}}</span>
+    </v-tooltip>
 
   </v-toolbar>
 </template>

@@ -60,9 +60,8 @@ function mapSort (data) {
   return data
 }
 
-function buildRequest (options, params = {}) {
+function buildRequest (options) {
   if (options.reset) return { reset: options.reset }
-  options = Object.assign(options, params)
 
   let result = {
     per_page: (() => {

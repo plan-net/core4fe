@@ -2,34 +2,29 @@
   <v-dialog persistent v-model="dialog" max-width="500px">
     <v-card>
 
-      <v-card-title>
-        Stream the table content to a CSV file
-      </v-card-title>
+      <v-card-title>{{translation.download_title}}</v-card-title>
 
       <v-card-text>
-        <v-switch
-          v-model="reset"
-          class="mx-2 mp-4"
-          color="primary"
-          label="Ignore the current column ordering and visibility"
-        ></v-switch>
+        <v-switch v-model="reset"
+                  class="mx-2 mp-4"
+                  color="primary"
+                  :label="translation.download_switch_label">
+        </v-switch>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          text
-          small
-          @click="download">
-            Download
+        <v-btn color="primary"
+               text
+               small
+               @click="cancel">
+          {{translation.cancel}}
         </v-btn>
-        <v-btn
-          color="primary"
-          text
-          small
-          @click="cancel">
-            Cancel
+        <v-btn color="primary"
+               text
+               small
+               @click="download">
+            {{translation.download}}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -43,7 +38,8 @@ export default {
   name: 'Download',
   props: {
     url: String,
-    dialog: Boolean
+    dialog: Boolean,
+    translation: Object
   },
   data () {
     return {

@@ -8,12 +8,21 @@ export const mapDict = {
 }
 
 export const initialTranslation = {
+  cancel: 'Cancel',
+  save: 'Save',
   data_loading: 'Data loading ...',
+  itemsPerPageAllText: 'All',
+  itemsPerPageText: 'Rows per page',
   advanced_options: 'Advanced options',
   show: 'Show',
   drag_drop_column: 'Drag & Drop columns',
-  itemsPerPageAllText: 'Alle',
-  itemsPerPageText: 'Zeilen pro Seite'
+  reset_options: 'Reset options',
+  dense: 'Dense',
+  download: 'Download',
+  download_title: 'Stream the table content to a CSV file',
+  download_switch_label: 'Ignore the current column ordering and visibility',
+  fullscreen: 'Fullscreen',
+  fullscreen_exit: 'Fullscreen exit'
 }
 
 export const OPTIONS = {
@@ -27,7 +36,7 @@ export const OPTIONS = {
   multiSort: true,
 
   option: {
-    advanced_options: false,
+    advanced_options: true,
     dense: true,
     fixed_header: null,
     footer: null,

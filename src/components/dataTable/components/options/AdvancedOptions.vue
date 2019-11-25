@@ -53,15 +53,15 @@
       <!-- Action buttons -->
       <v-card-actions>
         <!-- Reset btn -->
-        <v-btn text small color="primary" @click="reset">Reset options</v-btn>
+        <v-btn text small color="primary" @click="reset">{{translation.reset_options}}</v-btn>
 
         <v-spacer></v-spacer>
 
         <!-- Cancel btn -->
-        <v-btn text small color="primary" @click="cancel">Cancel</v-btn>
+        <v-btn text small color="primary" @click="cancel">{{translation.cancel}}</v-btn>
 
         <!-- Save btn -->
-        <v-btn text small color="primary" @click="save">Save</v-btn>
+        <v-btn text small color="primary" @click="save">{{translation.save}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -109,9 +109,6 @@ export default {
     cancel () {
       this.$emit('closeDialog', false)
     }
-  },
-  beforeDestroy () {
-    console.log('Advanced options destroy')
   }
 }
 </script>
