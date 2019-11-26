@@ -4,7 +4,7 @@ let noWrap = debounce((el, value) => {
   // console.log('noWrap')
   let rows = el.querySelector('.v-data-table table tbody').childNodes
 
-  //index for which <td> in table we need add nowrap attribute
+  // index for which <td> in table we need add nowrap attribute
   let tdNumbers = index(value)
 
   tdNumbers.length &&
@@ -17,7 +17,7 @@ let noWrap = debounce((el, value) => {
   })
 }, 500)
 
-function index(arr) {
+function index (arr) {
   return arr.reduce((result, item, i) => {
     if (item.nowrap) result.push(i)
 
@@ -26,7 +26,6 @@ function index(arr) {
 }
 
 function update (el, { value, arg, modifiers }, { context: component }) {
-
   // ToDo: figure out why this doesn't work
   // if (component && component.$el === el) {
   //   noWrap(el, value)
