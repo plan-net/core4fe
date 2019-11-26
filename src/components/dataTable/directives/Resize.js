@@ -1,4 +1,4 @@
-import { debounce } from './debounce'
+import { debounce } from '../helper/debounce'
 require('intersection-observer')
 const ResizeSensor = require('css-element-queries/src/ResizeSensor')
 

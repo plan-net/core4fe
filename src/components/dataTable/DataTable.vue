@@ -17,6 +17,7 @@
                   :loading-text="translation.dataLoading"
                   :footer-props="footerProps"
                   v-resize:debounce="onResize"
+                  v-nowrap="headers"
                   @click:row="$emit('click-row', $event)">
 
       <!-- Toolbar -->
@@ -54,8 +55,10 @@ import RegularWrapper from './components/RegularWrapper'
 import FullscreenWrapper from './components/FullscreenWrapper'
 import Toolbar from './components/options/Toolbar'
 
+import Nowrap from './directives/Nowrap'
+import Resize from './directives/Resize'
+
 import apiService from './api/service'
-import resize from './helper/resize.js'
 import { checkShadow } from './helper/resize-functions.js'
 import { initialTranslation, OPTIONS } from './helper/obj.js'
 
@@ -67,7 +70,8 @@ export default {
     Toolbar
   },
   directives: {
-    resize
+    Resize,
+    Nowrap
   },
   props: {
     config: {
