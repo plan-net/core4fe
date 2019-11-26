@@ -2,14 +2,14 @@ import debounce from 'debounce'
 
 let noWrap = debounce((el, value) => {
   // console.log('noWrap')
-  let rows = el.querySelector('.v-data-table table tbody').childNodes
+  let tableRows = el.querySelector('.v-data-table table tbody').childNodes
 
   // index for which <td> in table we need add nowrap attribute
   let tdNumbers = index(value)
 
   tdNumbers.length &&
-  rows &&
-  rows[0].childNodes.forEach((item, i) => {
+  tableRows &&
+  tableRows[0].childNodes.forEach((item, i) => {
     // console.log('noWrap')
     item.removeAttribute('nowrap')
 
