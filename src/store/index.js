@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
-import clients from './clients'
+import temp from './temp'
 
 const debug = process.env.NODE_ENV !== 'production'
 const plugins = debug ? [createLogger({})] : []
@@ -12,6 +12,6 @@ export default new Vuex.Store({
   plugins,
   strict: true, // debug,
   modules: {
-    clients
+    temp
   }
 })

@@ -6,12 +6,11 @@
       dense class="boards"
       tag="v-list"
     >
-      <!-- //LIST OF CLIENTS -->
       <template>
         <v-list-item to="/" key="-1001">
           <v-list-item-content>
             <v-list-item-title>
-              Clients
+              Hello World
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
