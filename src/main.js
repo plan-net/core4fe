@@ -13,10 +13,6 @@ Vue.use(Core4ui, {
   store,
   config: {
     THEME,
-<<<<<<< Updated upstream
-    TITLE: 'app---name'
-=======
     TITLE: 'core4fe'
->>>>>>> Stashed changes
   }
 })

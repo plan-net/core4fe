@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "name": "app---name",
-=======
   "name": "core4fe",
->>>>>>> Stashed changes
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,13 +16,8 @@
     "dist": "./dist"
   },
   "dependencies": {
-<<<<<<< Updated upstream
-    "axios-mock-adapter": "^1.16.0",
-    "core4ui": "^1.2.15"
-=======
     "highcharts": "^8.1.2",
     "core4ui": "https://github.com/plan-net/core4ui.git#oto.error"
->>>>>>> Stashed changes
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

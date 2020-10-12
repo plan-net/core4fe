@@ -12,11 +12,7 @@
         >
           <v-list-item-content>
             <v-list-item-title>
-<<<<<<< Updated upstream
-              Hello World
-=======
               Home
->>>>>>> Stashed changes
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>

@@ -1,10 +1,4 @@
-<<<<<<< Updated upstream
-# app---name
-This is just a starter application for core4/core4ui webapps.
-[Outdated documentation (parts)](https://bi.plan-net.com/styleguide/)
-=======
 # core4fe
->>>>>>> Stashed changes
 
 ## Project setup
 ```
