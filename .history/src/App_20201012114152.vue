@@ -1,14 +1,6 @@
 <template>
-  <c4-webapp :full-width="true">
+  <c4-webapp :full-width="false">
     <side-navigation slot="navigation-slot"></side-navigation>
-    <portal to="c4ui-title-portal">
-      <img
-        class="appbar-logo"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Wikipedia_wordmark.svg/2880px-Wikipedia_wordmark.svg.png"
-        alt=""
-      >
-    </portal>
-
   </c4-webapp>
 </template>
 <script>

@@ -1,10 +1,19 @@
 <template>
+
   <c4-webapp :full-width="true">
     <side-navigation slot="navigation-slot"></side-navigation>
+
     <portal to="c4ui-title-portal">
       <img
+        v-if="dark"
         class="appbar-logo"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Wikipedia_wordmark.svg/2880px-Wikipedia_wordmark.svg.png"
+        src="~@/img/appbar/xo_logo_wt.svg"
+        alt=""
+      >
+      <img
+        v-else
+        class="appbar-logo"
+        src="~@/img/appbar/xo_logo_bl.svg"
         alt=""
       >
     </portal>
