@@ -17,18 +17,13 @@
           </v-list-item-content>
         </v-list-item>
       </template>
-
     </v-slide-y-transition>
   </div>
 </template>
 <script>
 
 export default {
-
 }
 </script>
 <style scoped lang="css">
-div >>> .v-list__tile .v-list__tile__content {
-  font-weight: 600;
-}
 </style>

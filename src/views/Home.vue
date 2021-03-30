@@ -1,5 +1,5 @@
 <template>
-  <c4-page small
+  <c4-page medium
     header-type="2"
     :dense="true"
   >
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'Home'
