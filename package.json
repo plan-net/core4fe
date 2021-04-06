@@ -16,7 +16,7 @@
     "dist": "./dist"
   },
   "dependencies": {
-    "core4ui": "https://github.com/plan-net/core4ui.git#mmr.next"
+    "core4ui": "^2.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

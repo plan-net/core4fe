@@ -1,25 +1,26 @@
 <template>
   <c4-webapp :full-width="true">
-    <side-navigation slot="navigation-slot"></side-navigation>
-    <portal to="c4ui-title-portal">
-      <img
-        class="appbar-logo"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Wikipedia_wordmark.svg/2880px-Wikipedia_wordmark.svg.png"
-        alt=""
-      >
+<!--     <portal to="c4ui-title-portal">
+      <h3 class="">OPTIONAL</h3>
     </portal>
+    <portal to="c4ui-topnav-portal">
+      <div>test</div>
+    </portal> -->
 
   </c4-webapp>
 </template>
 <script>
-import SideNavigation from '@/components/SideNavigation'
 
 export default {
-  name: 'data-table',
+  name: 'c4-webapp-main',
   components: {
-    SideNavigation
   },
-  computed: {},
+  data () {
+    return {
+    }
+  },
+  computed: {
+  },
   mounted () {
   }
 }
